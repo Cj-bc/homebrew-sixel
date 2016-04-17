@@ -1,20 +1,26 @@
-require "formula"
-
 class Mlterm < Formula
   homepage "http://mlterm.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/mlterm/01release/mlterm-3.3.8/mlterm-3.3.8.tar.gz"
-  head "https://bitbucket.org/arakiken/mlterm", :using => :hg
-  sha1 "2552cb12fe74629b2eb4ae364f6c8751faa34118"
+  url "https://downloads.sourceforge.net/project/mlterm/01release/mlterm-3.7.0/mlterm-3.7.0.tar.gz"
+  sha256 "4a81d9e1957e4f0b8f8e0838ddad0cf4776fabc73465d886f2211bb8d990c339"
 
-  depends_on :x11
-  depends_on 'gdk-pixbuf'
-  depends_on 'cairo'
-  depends_on 'gtk+'
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-imagelib=gdk-pixbuf", "--with-type-engines=cairo", "--with-x"
-    system "make"
+    args = ["--prefix=#{prefix}",
+            "--with-gui=quartz",
+           ]
+
+    system "./configure", *args
     system "make", "install"
+
+    inreplace "cocoa/install.sh", "$HOME", "#{buildpath}/cocoa"
+    system "cocoa/install.sh", "#{prefix}"
+    prefix.install "cocoa/mlterm.app"
+
+    (bin/"mlterm").unlink # Kill the existing symlink
+    (bin/"mlterm").write <<-EOS.undent
+        #!/bin/bash
+        exec #{prefix}/mlterm.app/Contents/MacOS/mlterm "$@"
+      EOS
   end
 end
