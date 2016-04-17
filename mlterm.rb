@@ -4,23 +4,34 @@ class Mlterm < Formula
   sha256 "4a81d9e1957e4f0b8f8e0838ddad0cf4776fabc73465d886f2211bb8d990c339"
 
   depends_on "pkg-config" => :build
+  depends_on :x11 => :optional
 
   def install
     args = ["--prefix=#{prefix}",
-            "--with-gui=quartz",
            ]
 
-    system "./configure", *args
-    system "make", "install"
+    if build.with? "x11"
+      args << "--with-gui=xlib"
 
-    inreplace "cocoa/install.sh", "$HOME", "#{buildpath}/cocoa"
-    system "cocoa/install.sh", "#{prefix}"
-    prefix.install "cocoa/mlterm.app"
+      system "./configure", *args
+      system "make", "install"
+    else # Cocoa
+      args << "--with-gui=quartz"
 
-    (bin/"mlterm").unlink # Kill the existing symlink
-    (bin/"mlterm").write <<-EOS.undent
-        #!/bin/bash
-        exec #{prefix}/mlterm.app/Contents/MacOS/mlterm "$@"
-      EOS
+      system "./configure", *args
+      system "make", "install"
+
+      inreplace "cocoa/install.sh", "$HOME", "#{buildpath}/cocoa"
+      system "cocoa/install.sh", "#{prefix}"
+      prefix.install "cocoa/mlterm.app"
+
+      (bin/"mlterm").unlink # Kill the existing symlink
+      (bin/"mlterm").write <<-EOS.undent
+          #!/bin/bash
+          exec #{prefix}/mlterm.app/Contents/MacOS/mlterm "$@"
+        EOS
+    end
+
   end
+
 end
