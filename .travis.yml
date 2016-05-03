@@ -1,0 +1,13 @@
+os: osx
+language: c
+script:
+  - FORMULA_URL="https://raw.githubusercontent.com/${TRAVIS_REPO_SLUG:?}/${TRAVIS_COMMIT:?}/${F:?}.rb"
+  - echo "${FORMULA_URL}"
+  - brew install "${FORMULA_URL}" ${OPTS}
+matrix:
+  allow_failures:
+    - env: F=mlterm OPTS="--with-x11"
+  fast_finish: true
+env:
+  - F=mlterm OPTS=""
+  - F=mlterm OPTS="--with-x11"
