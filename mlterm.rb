@@ -1,6 +1,7 @@
 class Mlterm < Formula
   homepage "http://mlterm.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/mlterm/01release/mlterm-3.7.0/mlterm-3.7.0.tar.gz"
+  head "https://bitbucket.org/arakiken/mlterm", :using => :hg
   sha256 "4a81d9e1957e4f0b8f8e0838ddad0cf4776fabc73465d886f2211bb8d990c339"
 
   depends_on "pkg-config" => :build
