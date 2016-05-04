@@ -13,6 +13,7 @@ class Mlterm < Formula
 
     if build.with? "x11"
       args << "--with-gui=xlib"
+      args << "--enable-utmp=no"
 
       system "./configure", *args
       system "make", "install"
