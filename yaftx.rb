@@ -1,7 +1,8 @@
 require "formula"
 
 class Yaftx < Formula
-  homepage "http://uobikiemukot.github.io/yaft/"
+  desc "yaft is simple framebuffer terminal emulator for minimalist."
+  homepage "https://uobikiemukot.github.io/yaft/"
   url "http://uobikiemukot.github.io/yaft/release/yaft-0.2.9.tar.gz"
   sha256 "80f7e6937ff0a34f77859c684d6f8e23c55d696e0bac4ac8b2f11f785db0374c"
   head "https://github.com/uobikiemukot/yaft.git"
