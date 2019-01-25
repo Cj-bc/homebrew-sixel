@@ -20,8 +20,8 @@ class Yaftx < Formula
 end
 
 __END__
---- a/makefile
-+++ b/makefile
+--- a/Makefile
++++ b/Makefile
 @@ -4,8 +4,8 @@ CC ?= gcc
  CFLAGS  ?= -std=c99 -pedantic -Wall -Wextra -O3 -s -pipe
  LDFLAGS ?=
