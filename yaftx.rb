@@ -13,6 +13,8 @@ class Yaftx < Formula
   def install
     ENV['LANG'] = 'en_US.UTF-8'
     system "make", "yaftx"
+    mkdir "#{share}/terminfo"
+    system "tic -o #{share}/terminfo info/yaft.src"
     bin.install 'yaftx'
   end
 end
